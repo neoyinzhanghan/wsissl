@@ -11,6 +11,7 @@ import os
 import random
 import pandas as pd
 from tqdm import tqdm
+import shutil
 
 #########################################################
 # ARGUMENT PARSING
@@ -147,7 +148,8 @@ for pdr in tqdm(train_pdrs, desc="Copying train files"):
                 ),
             )
         else:
-            os.copy(
+            # use shutil.copyfile
+            shutil.copyfile(
                 os.path.join(pdr, file),
                 os.path.join(
                     args.save_dir,
@@ -168,7 +170,7 @@ for pdr in tqdm(val_pdrs, desc="Copying val files"):
                 ),
             )
         else:
-            os.copy(
+            shutil.copyfile(
                 os.path.join(pdr, file),
                 os.path.join(
                     args.save_dir,
@@ -189,7 +191,7 @@ for pdr in tqdm(test_pdrs, desc="Copying test files"):
                 ),
             )
         else:
-            os.copy(
+            shutil.copyfile(
                 os.path.join(pdr, file),
                 os.path.join(
                     args.save_dir,
