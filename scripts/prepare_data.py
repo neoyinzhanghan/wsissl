@@ -84,12 +84,16 @@ args = parser.parse_args()
 
 
 # first pool the subdirectories together
-pooled_pdrs = sum(
-    [
-        [os.path.join(input_dir, wsi_dir) for wsi_dir in os.listdir(input_dir)]
-        for input_dir in args.input_dirs
-    ]
-)
+pooled_pdrs = []
+
+lsts_to_combined = [
+    [os.path.join(input_dir, wsi_dir) for wsi_dir in os.listdir(input_dir)]
+    for input_dir in args.input_dirs
+]
+
+for lst in lsts_to_combined:
+    pooled_pdrs += lst
+
 
 # split the pooled subdirectories into train, val, test
 # we use the same seed for reproducibility
