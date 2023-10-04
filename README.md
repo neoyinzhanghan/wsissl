@@ -1,3 +1,3 @@
-# Whole Slide Image Self-Supervised Learning
+# A Frankenstein Self-Supervised Learning Package
 
 … under development
