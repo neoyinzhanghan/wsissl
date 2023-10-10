@@ -65,7 +65,7 @@ group.add_argument(
 )
 
 group.add_argument(
-    "--max_n_data",
+    "--max_n_wsi",
     type=int,
     default=None,
     help="Maximum number of data to use",
