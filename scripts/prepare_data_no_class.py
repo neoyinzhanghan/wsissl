@@ -134,7 +134,7 @@ test_pdrs = shuffled_pooled_pdrs[
 # create the metadata CSV file starting with a pandas dataframe
 df = pd.DataFrame(
     {
-        "slide_name": [os.path.basename(pdr) for pdr in pooled_pdrs],
+        "slide_name": [os.path.basename(pdr) for pdr in shuffled_pooled_pdrs],
         "split": ["train"] * len(train_pdrs)
         + ["val"] * len(val_pdrs)
         + ["test"] * len(test_pdrs),
