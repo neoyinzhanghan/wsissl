@@ -90,6 +90,9 @@ group.add_argument(
 
 args = parser.parse_args()
 
+# if the save_dir does not exist, create it
+if not os.path.exists(args.save_dir):
+    os.makedirs(args.save_dir)
 
 # first pool the subdirectories together
 pooled_pdrs = []
