@@ -64,6 +64,13 @@ group.add_argument(
     help="Fraction of data to use for testing",
 )
 
+group.add_argument(
+    "--max_n_data",
+    type=int,
+    default=None,
+    help="Maximum number of data to use",
+)
+
 #########################################################
 group = parser.add_argument_group("Misc")
 #########################################################
@@ -105,6 +112,10 @@ for lst in lsts_to_combined:
 
 # shuffle the pooled subdirectories
 shuffled_pooled_pdrs = random.sample(pooled_pdrs, len(pooled_pdrs))
+
+# if max_n_data is not None, we only use the first max_n_data data
+if args.max_n_data is not None:
+    shuffled_pooled_pdrs = shuffled_pooled_pdrs[: args.max_n_data]
 
 # split the shuffled pooled subdirectories into train, val, test
 train_pdrs = shuffled_pooled_pdrs[: int(args.train_prop * len(shuffled_pooled_pdrs))]
