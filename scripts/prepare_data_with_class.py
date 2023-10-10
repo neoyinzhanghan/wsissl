@@ -83,6 +83,9 @@ group.add_argument(
 
 args = parser.parse_args()
 
+# if the save_dir does not exist, create it
+os.mkdir(args.save_dir, exist_ok=True)
+
 
 # first pool the subdirectories together
 pooled_pdrs = []
@@ -131,12 +134,12 @@ df = pd.DataFrame(
 df.to_csv(os.path.join(args.save_dir, "metadata.csv"), index=False)
 
 # create the train, val, test subdirectories
-if not os.path.exists(os.path.join(args.save_dir, "train")):
-    os.mkdir(os.path.join(args.save_dir, "train"))
-if not os.path.exists(os.path.join(args.save_dir, "val")):
-    os.mkdir(os.path.join(args.save_dir, "val"))
-if not os.path.exists(os.path.join(args.save_dir, "test")):
-    os.mkdir(os.path.join(args.save_dir, "test"))
+os.mkdir(os.path.join(args.save_dir, "train"), exist_ok=True)
+os.mkdir(os.path.join(args.save_dir, "val"), exist_ok=True)
+os.mkdir(os.path.join(args.save_dir, "test"), exist_ok=True)
+os.mkdir(os.path.join(args.save_dir, "train", "patch"), exist_ok=True)
+os.mkdir(os.path.join(args.save_dir, "val", "patch"), exist_ok=True)
+os.mkdir(os.path.join(args.save_dir, "test", "patch"), exist_ok=True)
 
 # copy the jpg in the corresponding slide subdirectories into the train, val, test subdirectories
 # the new file name should be subdirectory_name___file_name (triple underscores)
