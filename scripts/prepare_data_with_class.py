@@ -64,6 +64,13 @@ group.add_argument(
     help="Fraction of data to use for testing",
 )
 
+group.add_argument(
+    "--max_n_wsis",
+    type=int,
+    default=None,
+    help="Maximum number of WSIs to use",
+)
+
 #########################################################
 group = parser.add_argument_group("Misc")
 #########################################################
@@ -110,6 +117,10 @@ for lst in lsts_to_combined:
 # shuffle the pooled subdirectories
 shuffled_pooled_pdrs = random.sample(pooled_pdrs, len(pooled_pdrs))
 
+# if max_n_wsis is not None, we only keep the first max_n_wsis elements
+if args.max_n_wsis is not None:
+    shuffled_pooled_pdrs = shuffled_pooled_pdrs[: args.max_n_wsis]
+
 # split the shuffled pooled subdirectories into train, val, test
 train_pdrs = shuffled_pooled_pdrs[: int(args.train_prop * len(shuffled_pooled_pdrs))]
 val_pdrs = shuffled_pooled_pdrs[
@@ -124,7 +135,7 @@ test_pdrs = shuffled_pooled_pdrs[
 # create the metadata CSV file starting with a pandas dataframe
 df = pd.DataFrame(
     {
-        "slide_name": [os.path.basename(pdr) for pdr in pooled_pdrs],
+        "slide_name": [os.path.basename(pdr) for pdr in shuffled_pooled_pdrs],
         "split": ["train"] * len(train_pdrs)
         + ["val"] * len(val_pdrs)
         + ["test"] * len(test_pdrs),
