@@ -6,7 +6,7 @@ from torchvision import transforms
 
 
 class PFDataset(Dataset):
-    def __init__(self, folders, num_images_per_epoch, transform=None):
+    def __init__(self, folders, num_images_per_epoch, transform):
         if (
             transform is None
         ):  # yell at the user in funny and unnecessary shakespearean insults
