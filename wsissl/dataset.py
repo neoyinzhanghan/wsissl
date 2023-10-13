@@ -7,6 +7,15 @@ from torchvision import transforms
 
 class PFDataset(Dataset):
     def __init__(self, folders, num_images_per_epoch, transform=None):
+        
+        if transform is None: # yell at the user in shakespearean profanities
+            print('You must provide a transform to the PFDataset class.' + 
+                  'See the documentation for more details.' +
+                  'You lily-livered, maggot-ridden, scum-sucking, pus-filled, bile-gushing, fecal-brained, pig-faced,' +
+                  'pus-filled, maggot-infested, sewer-sipping, mucus-snorting, urine-nosed, rectum-poking, slime-coated,' +
+                  'booger-eating, vomit-gurgling, monkey-slapping, toilet-kissing, self-centered, feces-gobbling, fart-loving,' + 
+                  ' smelly, rotting, cross-eyed, inbred, pile of cow dung.')
+
         self.transform = transform
         self.num_images_per_epoch = num_images_per_epoch
         self.folders = folders
