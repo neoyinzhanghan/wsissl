@@ -7,18 +7,6 @@ from torchvision import transforms
 
 class PFDataset(Dataset):
     def __init__(self, folders, num_images_per_epoch, transform):
-        if (
-            transform is None
-        ):  # yell at the user in funny and unnecessary shakespearean insults
-            print(
-                "You must provide a transform to the PFDataset class. "
-                + "See the documentation for more details. "
-                + "You lily-livered, maggot-ridden, scum-sucking, pus-filled, bile-gushing, fecal-brained, pig-faced, "
-                + "pus-filled, maggot-infested, sewer-sipping, mucus-snorting, urine-nosed, rectum-poking, slime-coated, "
-                + "booger-eating, vomit-gurgling, monkey-slapping, toilet-kissing, self-centered, feces-gobbling, fart-loving, "
-                + "smelly, rotting, cross-eyed, inbred, pile of cow dung."
-            )
-
         self.transform = transform
         self.num_images_per_epoch = num_images_per_epoch
         self.folders = folders
@@ -46,7 +34,10 @@ class PFDataset(Dataset):
         # load the JPG image in image_path as PIL
         image = Image.open(image_path)
 
-        image = self.transform(image)
+        if self.transform is None:
+            raise ValueError('Transform should not be None. ') # TODO -- None transform should in general be supported -- currently not, for debugging purposes
+        else:  
+            image = self.transform(image)
 
         if isinstance(image, Image.Image):
             image = transforms.ToTensor()(image)
