@@ -55,6 +55,7 @@ def folder_train_test_split(data_dir, train_prop=0.8):
         for d in os.listdir(data_dir)
         if os.path.isdir(os.path.join(data_dir, d))
     ]
+    
     random.shuffle(folders)
     train_size = int(len(folders) * train_prop)
     train_folders = folders[:train_size]
