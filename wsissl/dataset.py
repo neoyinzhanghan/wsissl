@@ -17,7 +17,7 @@ class PFDataset(Dataset):
                 if img.endswith(".jpg")
             ]
             for folder in self.folders
-        }
+        } # the name of each folder is being mapped to a list of images in that folder
 
     def __len__(self):
         # 64 batches per epoch
@@ -55,7 +55,7 @@ def folder_train_test_split(data_dir, train_prop=0.8):
         for d in os.listdir(data_dir)
         if os.path.isdir(os.path.join(data_dir, d))
     ]
-    
+
     random.shuffle(folders)
     train_size = int(len(folders) * train_prop)
     train_folders = folders[:train_size]
