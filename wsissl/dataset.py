@@ -43,7 +43,7 @@ class PFDataset(Dataset):
             image = transforms.ToTensor()(image)
 
         # Return the image with a fixed class label (e.g., 0)
-        return image, 0, image_path
+        return image, 0
 
 
 def folder_train_test_split(data_dir, train_prop=0.8):
