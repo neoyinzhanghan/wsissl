@@ -183,6 +183,8 @@ for pdr in tqdm(train_pdrs, desc="Copying train files"):
                 # now create the symbolic link
                 symlink_target = os.path.join(pdr, file)
 
+                os.symlink(symlink_target, symlink_name)
+
                 current_index += 1
 
             else:
@@ -219,6 +221,8 @@ for pdr in tqdm(val_pdrs, desc="Copying val files"):
                 # now create the symbolic link
                 symlink_target = os.path.join(pdr, file)
 
+                os.symlink(symlink_target, symlink_name)
+
                 current_index += 1
 
             else:
@@ -253,6 +257,8 @@ for pdr in tqdm(test_pdrs, desc="Copying test files"):
 
                 # now create the symbolic link
                 symlink_target = os.path.join(pdr, file)
+
+                os.symlink(symlink_target, symlink_name)
 
                 current_index += 1
 
