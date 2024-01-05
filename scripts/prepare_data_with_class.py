@@ -177,7 +177,7 @@ for pdr in tqdm(train_pdrs, desc="Copying train files"):
                     args.save_dir,
                     "train",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now create the symbolic link
@@ -193,7 +193,7 @@ for pdr in tqdm(train_pdrs, desc="Copying train files"):
                     args.save_dir,
                     "train",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now copy the file
@@ -215,7 +215,7 @@ for pdr in tqdm(val_pdrs, desc="Copying val files"):
                     args.save_dir,
                     "val",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now create the symbolic link
@@ -231,7 +231,7 @@ for pdr in tqdm(val_pdrs, desc="Copying val files"):
                     args.save_dir,
                     "val",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now copy the file
@@ -252,7 +252,7 @@ for pdr in tqdm(test_pdrs, desc="Copying test files"):
                     args.save_dir,
                     "test",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now create the symbolic link
@@ -268,7 +268,7 @@ for pdr in tqdm(test_pdrs, desc="Copying test files"):
                     args.save_dir,
                     "test",
                     "patch",
-                    str(current_index) + ".JPEG",
+                    'patch_' + str(current_index) + ".JPEG",
                 )
 
                 # now copy the file
