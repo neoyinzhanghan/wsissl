@@ -160,73 +160,92 @@ if not os.path.exists(os.path.join(args.save_dir, "test", "patch")):
     os.mkdir(os.path.join(args.save_dir, "test", "patch"))
 
 # copy the jpg in the corresponding slide subdirectories into the train, val, test subdirectories
-# the new file name should be subdirectory_name___file_name (triple underscores)
+# the extension of the files is .JPEG
 for pdr in tqdm(train_pdrs, desc="Copying train files"):
     for file in os.listdir(pdr):
         if args.symbolic:
-            os.symlink(
-                os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "train",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+            # Construct the symbolic link's name with .JPEG extension
+            symlink_name = os.path.join(
+                args.save_dir,
+                "train",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
             )
+            symlink_target = os.path.join(pdr, file)
+            os.symlink(symlink_target, symlink_name)
+
         else:
-            # use shutil.copyfile
+            new_name = os.path.join(
+                args.save_dir,
+                "train",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
+            )
             shutil.copyfile(
                 os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "train",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+                new_name,
             )
 
 for pdr in tqdm(val_pdrs, desc="Copying val files"):
     for file in os.listdir(pdr):
         if args.symbolic:
-            os.symlink(
-                os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "val",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+            symlink_name = os.path.join(
+                args.save_dir,
+                "val",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
             )
+            symlink_target = os.path.join(pdr, file)
+            os.symlink(symlink_target, symlink_name)
         else:
+            new_name = os.path.join(
+                args.save_dir,
+                "val",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
+            )
             shutil.copyfile(
                 os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "val",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+                new_name,
             )
 
 for pdr in tqdm(test_pdrs, desc="Copying test files"):
     for file in os.listdir(pdr):
         if args.symbolic:
-            os.symlink(
-                os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "test",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+            symlink_name = os.path.join(
+                args.save_dir,
+                "test",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
             )
+            symlink_target = os.path.join(pdr, file)
+            os.symlink(symlink_target, symlink_name)
         else:
+            new_name = os.path.join(
+                args.save_dir,
+                "test",
+                "patch",
+                os.path.basename(pdr).replace(".", "_")
+                + "_"
+                + os.path.splitext(file)[0]
+                + ".JPEG",
+            )
             shutil.copyfile(
                 os.path.join(pdr, file),
-                os.path.join(
-                    args.save_dir,
-                    "test",
-                    "patch",
-                    os.path.basename(pdr) + "___" + file,
-                ),
+                new_name,
             )
