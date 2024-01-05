@@ -12,6 +12,8 @@ import random
 import pandas as pd
 from tqdm import tqdm
 import shutil
+from imghdr import what
+
 
 #########################################################
 # ARGUMENT PARSING
@@ -161,91 +163,112 @@ if not os.path.exists(os.path.join(args.save_dir, "test", "patch")):
 
 # copy the jpg in the corresponding slide subdirectories into the train, val, test subdirectories
 # the extension of the files is .JPEG
-for pdr in tqdm(train_pdrs, desc="Copying train files"):
-    for file in os.listdir(pdr):
-        if args.symbolic:
-            # Construct the symbolic link's name with .JPEG extension
-            symlink_name = os.path.join(
-                args.save_dir,
-                "train",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            symlink_target = os.path.join(pdr, file)
-            os.symlink(symlink_target, symlink_name)
 
-        else:
-            new_name = os.path.join(
-                args.save_dir,
-                "train",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            shutil.copyfile(
-                os.path.join(pdr, file),
-                new_name,
-            )
+current_index = 0
+
+for pdr in tqdm(train_pdrs, desc="Copying train files"):
+    # for all the image files in the current pdr make sure to check they are images in the for loop
+    for file in os.listdir(pdr):
+        file_path = os.path.join(pdr, file)
+        if what(file_path):
+            if args.symbolic:
+                # the name of the symbolic link should be patch_current_index.JPEG
+                symlink_name = os.path.join(
+                    args.save_dir,
+                    "train",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now create the symbolic link
+                symlink_target = os.path.join(pdr, file)
+
+                current_index += 1
+
+            else:
+                # the name of the new file should be patch_current_index.JPEG
+                new_name = os.path.join(
+                    args.save_dir,
+                    "train",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now copy the file
+                shutil.copyfile(
+                    os.path.join(pdr, file),
+                    new_name,
+                )
+
+                current_index += 1
 
 for pdr in tqdm(val_pdrs, desc="Copying val files"):
     for file in os.listdir(pdr):
-        if args.symbolic:
-            symlink_name = os.path.join(
-                args.save_dir,
-                "val",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            symlink_target = os.path.join(pdr, file)
-            os.symlink(symlink_target, symlink_name)
-        else:
-            new_name = os.path.join(
-                args.save_dir,
-                "val",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            shutil.copyfile(
-                os.path.join(pdr, file),
-                new_name,
-            )
+        file_path = os.path.join(pdr, file)
+
+        if what(file_path):
+            if args.symbolic:
+                # the name of the symbolic link should be patch_current_index.JPEG
+                symlink_name = os.path.join(
+                    args.save_dir,
+                    "val",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now create the symbolic link
+                symlink_target = os.path.join(pdr, file)
+
+                current_index += 1
+
+            else:
+                # the name of the new file should be patch_current_index.JPEG
+                new_name = os.path.join(
+                    args.save_dir,
+                    "val",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now copy the file
+                shutil.copyfile(
+                    os.path.join(pdr, file),
+                    new_name,
+                )
+
+                current_index += 1
 
 for pdr in tqdm(test_pdrs, desc="Copying test files"):
     for file in os.listdir(pdr):
-        if args.symbolic:
-            symlink_name = os.path.join(
-                args.save_dir,
-                "test",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            symlink_target = os.path.join(pdr, file)
-            os.symlink(symlink_target, symlink_name)
-        else:
-            new_name = os.path.join(
-                args.save_dir,
-                "test",
-                "patch",
-                os.path.basename(pdr).replace(".", "_")
-                + "_"
-                + os.path.splitext(file)[0]
-                + ".JPEG",
-            )
-            shutil.copyfile(
-                os.path.join(pdr, file),
-                new_name,
-            )
+        file_path = os.path.join(pdr, file)
+        if what(file_path):
+            if args.symbolic:
+                # the name of the symbolic link should be patch_current_index.JPEG
+                symlink_name = os.path.join(
+                    args.save_dir,
+                    "test",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now create the symbolic link
+                symlink_target = os.path.join(pdr, file)
+
+                current_index += 1
+
+            else:
+                # the name of the new file should be patch_current_index.JPEG
+                new_name = os.path.join(
+                    args.save_dir,
+                    "test",
+                    "patch",
+                    str(current_index) + ".JPEG",
+                )
+
+                # now copy the file
+                shutil.copyfile(
+                    os.path.join(pdr, file),
+                    new_name,
+                )
+
+                current_index += 1
