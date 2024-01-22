@@ -49,9 +49,9 @@ def rsync_file(source, destination):
 
 
 def main():
-    source_folder = "/path/to/source"
-    destination_folder = "/path/to/destination"
-    log_file = "/path/to/logfile.csv"
+    source_folder = "/mnt/ucsf_dp_server/DP_CP_Projects/Kim.203bc.Cyto/203.B"
+    destination_folder = "/media/hdd1/pancreas"
+    log_file = "/media/hdd1/pancreas/moving_time.csv"
 
     # Prepare a list to store log data
     log_data = []
