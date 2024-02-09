@@ -4,9 +4,9 @@ import pandas as pd
 from tqdm import tqdm
 
 # path to the current full dataset
-dataset_dir = "/media/hdd1/neo/pancreas_SimCLR_data/pancreas_IMAGENET_SYM"
+dataset_dir = "/media/hdd2/neo/pancreas_DINOv2_data/pancreas_IMAGENET_SYM"
 
-mini_dataset_dir = "/media/hdd1/neo/pancreas_SimCLR_data/pancreas_IMAGENET_SYM_mini"
+mini_dataset_dir = "/media/hdd2/neo/pancreas_DINOv2_data/pancreas_IMAGENET_SYM_mini"
 os.makedirs(mini_dataset_dir, exist_ok=True)
 
 num_train_per_class = 1000
