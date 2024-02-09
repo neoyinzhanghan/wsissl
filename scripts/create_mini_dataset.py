@@ -16,7 +16,7 @@ num_test_per_class = 1000
 # there should be three folders in the dataset_dir, train, val, and test
 # each of these folders should contain a subfolder named patch
 
-# randomly subssample the train, val, and test folders, and copy them to the mini_dataset_dir using the same folder structure and using shutil
+# randomly subssample the train, val, and test folders, and copy them to the mini_dataset_dir using the same folder structure and using symbolic link
 for folder in ["train", "val", "test"]:
     os.makedirs(os.path.join(mini_dataset_dir, folder), exist_ok=True)
     os.makedirs(os.path.join(mini_dataset_dir, folder, "patch"), exist_ok=True)
@@ -33,4 +33,4 @@ for folder in ["train", "val", "test"]:
     selected_images = random.sample(images, num_per_class)
 
     for image in tqdm(selected_images, desc=folder):
-        os.system(f"cp {os.path.join(dataset_dir, folder, 'patch', image)} {os.path.join(mini_dataset_dir, folder, 'patch', image)}")
+        os.symlink(os.path.join(dataset_dir, folder, "patch", image), os.path.join(mini_dataset_dir, folder, "patch", image))
