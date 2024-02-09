@@ -9,9 +9,9 @@ dataset_dir = "/media/hdd1/neo/pancreas_SimCLR_data/pancreas_IMAGENET_SYM"
 mini_dataset_dir = "/media/hdd1/neo/pancreas_SimCLR_data/pancreas_IMAGENET_SYM_mini"
 os.makedirs(mini_dataset_dir, exist_ok=True)
 
-num_train_per_class = 10000
-num_val_per_class = 1000
-num_test_per_class = 1000
+num_train_per_class = 1000
+num_val_per_class = 100
+num_test_per_class = 100
 
 # there should be three folders in the dataset_dir, train, val, and test
 # each of these folders should contain a subfolder named patch
