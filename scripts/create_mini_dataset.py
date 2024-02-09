@@ -33,3 +33,6 @@ for folder in ["train", "val", "test"]:
 
     for image in tqdm(selected_images, desc=folder):
         os.system(f"cp {os.path.join(dataset_dir, folder, 'patch', image)} {os.path.join(mini_dataset_dir, folder, 'patch', image)}")
+
+        import sys
+        sys.exit()
