@@ -10,7 +10,7 @@ img_exts = ["jpg", "png"]
 # first iteratively find all the images in the root_folder
 images = []
 non_images = []
-for root, dirs, files in tqdm(os.walk(root_folder), desc="Finding images"):
+for root, dirs, files in os.walk(root_folder):
     for file in files:
         if Path(file).suffix[1:] in img_exts:
             images.append(os.path.join
@@ -26,7 +26,7 @@ for root, dirs, files in tqdm(os.walk(root_folder), desc="Finding images"):
 mean = np.zeros(3)
 std = np.zeros(3)
 num_pixels = 0
-for image in images:
+for image in tqdm(images, desc="Calculating pixel stats:"):
 
     img = Image.open(image)
     # if the image is RGBA, convert it to RGB
