@@ -2,14 +2,15 @@ import os
 import numpy as np
 from pathlib import Path
 from PIL import Image
+from tqdm import tqdm
 
-root_folder = ""
+root_folder = "/media/hdd1/neo/bma_region_clf_data_full_v2"
 img_exts = ["jpg", "png"]
 
 # first iteratively find all the images in the root_folder
 images = []
 non_images = []
-for root, dirs, files in os.walk(root_folder):
+for root, dirs, files in tqdm(os.walk(root_folder), desc="Finding images"):
     for file in files:
         if Path(file).suffix[1:] in img_exts:
             images.append(os.path.join
