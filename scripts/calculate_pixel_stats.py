@@ -33,7 +33,7 @@ for image in tqdm(images, desc="Calculating pixel stats:"):
     if img.mode == "RGBA":
         img = img.convert("RGB")
         
-    img = np.array(img)
+    img = np.array(img)/255.0
     mean += img.mean(axis=(0, 1))
     std += img.std(axis=(0, 1))
     num_pixels += img.shape[0] * img.shape[1]
