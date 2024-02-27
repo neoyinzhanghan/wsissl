@@ -27,7 +27,12 @@ mean = np.zeros(3)
 std = np.zeros(3)
 num_pixels = 0
 for image in images:
+
     img = Image.open(image)
+    # if the image is RGBA, convert it to RGB
+    if img.mode == "RGBA":
+        img = img.convert("RGB")
+        
     img = np.array(img)
     mean += img.mean(axis=(0, 1))
     std += img.std(axis=(0, 1))
