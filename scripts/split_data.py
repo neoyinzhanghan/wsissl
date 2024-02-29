@@ -5,11 +5,13 @@ from tqdm import tqdm
 import pandas as pd
 import numpy as np
 
-data_dir = "/media/hdd1/neo/bma_region_clf_data_full_v2"
+data_dir = "/media/hdd2/neo/bma_region_clf_data_full_v2"
 train_ratio = 0.8
 val_ratio = 0.1
 # Assuming test_ratio is implicitly defined as the remaining percentage.
-save_dir = "/media/hdd1/neo/bma_region_clf_data_full_v2_split"
+save_dir = "/media/hdd2/neo/bma_region_clf_data_full_v2_split"
+
+os.makedirs(save_dir, exist_ok=True)
 
 # Prepare directories for the splits
 for split in ['train', 'val', 'test']:
