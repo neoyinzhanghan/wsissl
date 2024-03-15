@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from tqdm import tqdm
 
 data_dir = "/media/hdd1/neo/LE_pancreas_LUAD"  # Adjust this to your data directory
 run_dir = "/media/hdd1/neo/runs/2024-03-15 LE_pancreas_LUAD"  # Adjust this to your run directory
@@ -12,10 +13,10 @@ print("Pooling Data")
 # Step 1: Pool data together
 features = []
 labels = []
-for class_dir in os.listdir(data_dir):
+for class_dir in tqdm(os.listdir(data_dir), desc="Pooling Classes"):
     class_path = os.path.join(data_dir, class_dir)
     if os.path.isdir(class_path):
-        for file in os.listdir(class_path):
+        for file in tqdm(os.listdir(class_path), desc=f"Pooling {class_dir}"):
             if file.endswith(".npy"):
                 file_path = os.path.join(class_path, file)
                 feature = np.load(file_path)
