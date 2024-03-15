@@ -11,8 +11,14 @@ run_dir = "/media/hdd1/neo/runs/2024-03-15 LE_pancreas_LUAD"  # Adjust this to y
 
 print("Pooling Data")
 # Step 1: Pool data together
+metadata_dict = {
+    "filename": [],
+    "label": [],
+}
+
 features = []
 labels = []
+
 for class_dir in tqdm(os.listdir(data_dir), desc="Pooling Classes"):
     class_path = os.path.join(data_dir, class_dir)
     if os.path.isdir(class_path):
@@ -27,6 +33,8 @@ for class_dir in tqdm(os.listdir(data_dir), desc="Pooling Classes"):
                 feature = np.load(file_path)
                 features.append(feature)
                 labels.append(class_dir)
+                metadata_dict["filename"].append(file_path)
+                metadata_dict["label"].append(class_dir)
 
 features = np.array(features)
 labels = np.array(labels)
@@ -42,15 +50,7 @@ X_val, X_test, y_val, y_test = train_test_split(
 
 print("Saving Data")
 # Step 3: Save metadata
-metadata = pd.DataFrame(
-    {
-        "filename": np.concatenate([X_train, X_val, X_test]),
-        "split": ["train"] * len(X_train)
-        + ["val"] * len(X_val)
-        + ["test"] * len(X_test),
-        "label": np.concatenate([y_train, y_val, y_test]),
-    }
-)
+metadata = pd.DataFrame(metadata_dict)
 metadata.to_csv(os.path.join(run_dir, "split.csv"), index=False)
 
 print("Linear Evaluation Fitting Model")
