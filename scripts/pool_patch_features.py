@@ -1,10 +1,11 @@
 import os
 import h5py
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 
 h5_dir = "/media/hdd1/neo/pancreas_SimCLR_2024-03-11"
-num_patches_per_h5 = 100
+num_patches_per_h5 = 1000
 save_dir = "/media/hdd1/neo/LE_pancreas_LUAD/pancreas"
 
 # find all the h5 files in the h5_dir
@@ -46,3 +47,9 @@ for h5_file in tqdm(h5_files, desc="Pooling Patch Features"):
         idx += 1
 
     h5_pack.close()
+
+# save the metadata file
+metadata_path = os.path.join(save_dir, "metadata.csv")
+metadata_df = pd.DataFrame(metadata_dict)
+metadata_df.to_csv(metadata_path, index=False)
+print(f"Metadata file saved at {metadata_path}")
