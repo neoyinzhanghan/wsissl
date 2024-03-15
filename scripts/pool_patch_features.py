@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-h5_dir = "/media/hdd1/neo/pancreas_SimCLR_2024-03-11"
-save_dir = "/media/hdd1/neo/LE_pancreas_LUAD/pancreas"
+h5_dir = "/media/hdd1/neo/TCGA-LUAD_SimCLR_2024-03-14"
+save_dir = "/media/hdd1/neo/LE_pancreas_LUAD/LUAD"
 
 # find all the h5 files in the h5_dir
 h5_files = [f for f in os.listdir(h5_dir) if f.endswith(".h5")]
