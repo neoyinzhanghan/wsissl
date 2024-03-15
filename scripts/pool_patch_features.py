@@ -26,7 +26,7 @@ for h5_file in tqdm(h5_files, desc="Pooling Patch Features"):
     h5_pack = h5py.File(h5_path, "r")
 
     # Get the features from the h5 file which has dim (N, 2048, 1, 1)
-    features = h5_pack["features"]
+    features = np.array(h5_pack["features"])
 
     # first reshape the features to (N, 2048)
     features = features.reshape(features.shape[0], -1)
