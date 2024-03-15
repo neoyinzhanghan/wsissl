@@ -12,3 +12,4 @@ print(h5_file.keys())
 
 # access the element with key 'features' and print its shape
 features = h5_file['features']
+print(features.shape)
