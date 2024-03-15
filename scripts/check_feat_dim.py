@@ -7,3 +7,5 @@ h5_file = h5py.File(h5_path, "r")
 
 # print the data structure of the h5 file
 print(h5_file)
+print(h5_file.keys())
+
