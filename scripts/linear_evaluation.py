@@ -8,6 +8,7 @@ from sklearn.metrics import accuracy_score
 data_dir = "/media/hdd1/neo/LE_pancreas_LUAD"  # Adjust this to your data directory
 run_dir = "/media/hdd1/neo/runs/2024-03-15 LE_pancreas_LUAD"  # Adjust this to your run directory
 
+print("Pooling Data")
 # Step 1: Pool data together
 features = []
 labels = []
@@ -24,6 +25,7 @@ for class_dir in os.listdir(data_dir):
 features = np.array(features)
 labels = np.array(labels)
 
+print("Splitting Data")
 # Step 2: Split the data
 X_train, X_temp, y_train, y_temp = train_test_split(
     features, labels, test_size=0.2, random_state=42
@@ -32,6 +34,7 @@ X_val, X_test, y_val, y_test = train_test_split(
     X_temp, y_temp, test_size=0.5, random_state=42
 )
 
+print("Saving Data")
 # Step 3: Save metadata
 metadata = pd.DataFrame(
     {
@@ -44,9 +47,12 @@ metadata = pd.DataFrame(
 )
 metadata.to_csv(os.path.join(run_dir, "split.csv"), index=False)
 
+print("Linear Evaluation Fitting Model")
 # Step 4: Linear evaluation
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train, y_train)
+
+print("Linear Evaluation Predicting")
 y_pred = model.predict(X_val)
 accuracy = accuracy_score(y_val, y_pred)
 
