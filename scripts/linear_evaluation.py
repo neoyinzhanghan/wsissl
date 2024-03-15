@@ -16,7 +16,12 @@ labels = []
 for class_dir in tqdm(os.listdir(data_dir), desc="Pooling Classes"):
     class_path = os.path.join(data_dir, class_dir)
     if os.path.isdir(class_path):
-        for file in tqdm(os.listdir(class_path), desc=f"Pooling {class_dir}"):
+        dataset = os.listdir(class_path)
+
+        # subsample the dataset to 10000
+        dataset = np.random.choice(dataset, 10000, replace=False)
+
+        for file in tqdm(dataset, desc=f"Pooling {class_dir}"):
             if file.endswith(".npy"):
                 file_path = os.path.join(class_path, file)
                 feature = np.load(file_path)
