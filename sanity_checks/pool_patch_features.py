@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-h5_dir = "/media/hdd1/neo/TCGA-LUAD_SimCLR_2024-03-14"
-save_dir = "/media/hdd1/neo/SC_pancreas_LUAD/LUAD"
+h5_dir = "/media/hdd1/neo/pancreas_SimCLR_2024-03-11"
+save_dir = "/media/hdd1/neo/SC_pancreas_LUAD/pancreas"
 
 # Make sure the save directory exists
 os.makedirs(save_dir, exist_ok=True)
