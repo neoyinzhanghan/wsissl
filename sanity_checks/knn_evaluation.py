@@ -116,6 +116,11 @@ accuracy = accuracy_score(y_val, y_pred)
 print(f"Validation Accuracy: {accuracy}")
 runtime_data["Model Evaluation"] = time.time() - start_time
 
+# save a dataframe with all the hyperparameters and their corresponding scores
+results_df = pd.DataFrame(grid_search.cv_results_)
+results_df.to_csv("grid_search_results.csv", index=False)
+print("Grid search results saved to 'grid_search_results.csv'.")
+
 # Save runtime data
 runtime_df = pd.DataFrame(list(runtime_data.items()), columns=["Operation", "Duration"])
 runtime_df.to_csv("runtime_data.csv", index=False)
