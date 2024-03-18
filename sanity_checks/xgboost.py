@@ -72,8 +72,8 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
 
 
 root_paths = [
-    "/media/hdd1/neo/LE_pancreas_LUAD/LUAD",
-    "/media/hdd1/neo/LE_pancreas_LUAD/pancreas",
+    "/media/hdd1/neo/SC_pancreas_LUAD/LUAD",
+    "/media/hdd1/neo/SC_pancreas_LUAD/pancreas",
 ]  # Replace with your actual paths
 
 print("Preparing data...")
