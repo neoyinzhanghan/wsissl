@@ -49,6 +49,11 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
 
     for split in ["train", "val", "test"]:
         for path, label in zip(slide_paths[split], labels[split]):
+
+            # if the slidesfiles is not a directory, skip
+            if not os.path.isdir(path):
+                continue
+
             slide_files = os.listdir(path)
 
             # If max_num_patches_per_slide is set, randomly select patches up to the limit
