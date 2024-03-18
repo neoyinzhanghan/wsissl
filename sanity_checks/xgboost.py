@@ -63,7 +63,12 @@ def load_regions(slide_paths, labels):
     return X, y
 
 
-root_paths = ["/media/hdd1/neo/LE_pancreas_LUAD/LUAD", "/media/hdd1/neo/LE_pancreas_LUAD/pancreas"]  # Replace with your actual paths
+root_paths = [
+    "/media/hdd1/neo/LE_pancreas_LUAD/LUAD",
+    "/media/hdd1/neo/LE_pancreas_LUAD/pancreas",
+]  # Replace with your actual paths
+
+print("Preparing data...")
 slide_paths, labels = split_slides(root_paths)
 X, y = load_regions(slide_paths, labels)
 
@@ -85,6 +90,7 @@ param_dist = {
     "colsample_bytree": uniform(0.8, 0.2),  # percentage of features used per tree
 }
 
+print("Starting hyperparameter tuning...")
 # Initialize XGBClassifier
 xgb_model = xgb.XGBClassifier(objective="multi:softmax", eval_metric="mlogloss")
 
@@ -98,7 +104,6 @@ random_search = RandomizedSearchCV(
     cv=3,
 )
 
-print("Starting hyperparameter tuning...")
 random_search.fit(X_train, y_train)
 
 # Best model
@@ -114,6 +119,7 @@ print(f"Validation Accuracy: {accuracy_score(y_val, preds)}")
 
 # Assuming random_search is your RandomizedSearchCV object and the search has been completed
 
+print("Saving hyperparameter search results...")
 # Extract the results into a DataFrame
 results = pd.DataFrame(random_search.cv_results_)
 
