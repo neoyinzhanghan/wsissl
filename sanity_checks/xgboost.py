@@ -5,6 +5,7 @@ import pandas as pd
 import random
 import os
 import numpy as np
+import time
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import accuracy_score
 from scipy.stats import uniform, randint
@@ -71,10 +72,14 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
     return X, y
 
 
+runtime_data = {}
+
 root_paths = [
     "/media/hdd1/neo/SC_pancreas_LUAD/LUAD",
     "/media/hdd1/neo/SC_pancreas_LUAD/pancreas",
 ]  # Replace with your actual paths
+
+start_time = time.time()
 
 print("Preparing data...")
 slide_paths, labels = split_slides(root_paths)
@@ -82,6 +87,11 @@ X, y = load_regions(slide_paths, labels, max_num_patches_per_slide=10)
 
 X_train, X_val, X_test = X["train"], X["val"], X["test"]
 y_train, y_val, y_test = y["train"], y["val"], y["test"]
+
+runtime_data["Patches Preparation"] = time.time() - start_time
+
+
+start_time = time.time()
 
 # Now you have X['train'], X['val'], X['test'] and y['train'], y['val'], y['test']
 
@@ -97,6 +107,11 @@ param_dist = {
     "subsample": uniform(0.8, 0.2),  # percentage of samples used per tree
     "colsample_bytree": uniform(0.8, 0.2),  # percentage of features used per tree
 }
+
+runtime_data["Setup Time"] = time.time() - start_time
+
+
+start_time = time.time()
 
 print("Starting hyperparameter tuning...")
 # Initialize XGBClassifier
@@ -117,15 +132,24 @@ random_search.fit(X_train, y_train)
 # Best model
 best_model = random_search.best_estimator_
 
+runtime_data["Hyperparameter Tuning"] = time.time() - start_time
+
+start_time = time.time()
+
 # Predictions and evaluation on validation set
 print("Evaluating model...")
 preds = best_model.predict(X_val)
 print(f"Validation Accuracy: {accuracy_score(y_val, preds)}")
 
+runtime_data["Validation Evaluation"] = time.time() - start_time
+
 # Optionally: save your model
 # best_model.save_model('best_xgb_model.json')
 
 # Assuming random_search is your RandomizedSearchCV object and the search has been completed
+
+
+start_time = time.time()
 
 print("Saving hyperparameter search results...")
 # Extract the results into a DataFrame
@@ -152,3 +176,11 @@ filtered_results = results.loc[:, interesting_columns]
 filtered_results.to_csv("hyperparameter_search_results.csv", index=False)
 
 print("Hyperparameter search results saved to 'hyperparameter_search_results.csv'.")
+
+runtime_data["Result Saving"] = time.time() - start_time
+
+# save the runtime data as a csv file in the current directory
+runtime_df = pd.DataFrame(runtime_data, index=[0])
+
+runtime_df.to_csv("runtime_data.csv", index=False)
+print("Runtime data saved to 'runtime_data.csv'.")
