@@ -2,13 +2,12 @@ import os
 import numpy as np
 import xgboost as xgb
 import pandas as pd
+import random
+import os
+import numpy as np
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import accuracy_score
 from scipy.stats import uniform, randint
-from tqdm import tqdm
-
-import os
-import numpy as np
 from sklearn.model_selection import train_test_split
 
 
@@ -42,14 +41,23 @@ def split_slides(root_paths, test_size=0.2, val_size=0.25):
     return slide_paths, labels
 
 
-# Function to load regions from given slide paths
-def load_regions(slide_paths, labels):
+# Function to load regions from given slide paths with a limit on the number of patches per slide
+def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
     X = {"train": [], "val": [], "test": []}
     y = {"train": [], "val": [], "test": []}
 
     for split in ["train", "val", "test"]:
         for path, label in zip(slide_paths[split], labels[split]):
-            for file in os.listdir(path):
+            slide_files = os.listdir(path)
+
+            # If max_num_patches_per_slide is set, randomly select patches up to the limit
+            if (
+                max_num_patches_per_slide is not None
+                and len(slide_files) > max_num_patches_per_slide
+            ):
+                slide_files = random.sample(slide_files, max_num_patches_per_slide)
+
+            for file in slide_files:
                 file_path = os.path.join(path, file)
                 img_array = np.load(file_path)
                 X[split].append(img_array.flatten())
