@@ -121,7 +121,12 @@ start_time = time.time()
 
 print("Starting hyperparameter tuning...")
 # Initialize XGBClassifier
-xgb_model = xgb.XGBClassifier(objective='multi:softprob', eval_metric="mlogloss")
+if len(np.unique(y_train)) > 2:
+    xgb_model = xgb.XGBClassifier(objective="multi:softmax", eval_metric="mlogloss")
+elif len(np.unique(y_train)) == 2:
+    xgb_model = xgb.XGBClassifier(objective="binary:logistic", eval_metric="mlogloss")
+else:
+    raise ValueError("Number of classes should be greater than 1")
 
 # Randomized Search
 n_iter_search = 50
