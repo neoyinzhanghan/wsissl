@@ -60,16 +60,11 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=10):
                 img_array = np.load(file_path)
                 X[split].append(img_array.flatten())
 
-                # print the shape of the img_array.flatten()
-                # print(img_array.flatten().shape)
-
                 y[split].append(label)
 
     for split in ["train", "val", "test"]:
         X[split] = np.array(X[split])
-        print(len(X[split]))
         y[split] = np.array(y[split])
-        print(len(y[split]))
 
     return X, y
 
@@ -94,13 +89,6 @@ y_train, y_val, y_test = y["train"], y["val"], y["test"]
 start_time = time.time()
 print("Fitting Logistic Regression Model...")
 model = LogisticRegression(max_iter=1000, solver="lbfgs")
-
-# check the length of the X_train and y_train
-print(len(X_train))
-print(len(y_train))
-import sys
-
-sys.exit()
 
 model.fit(X_train, y_train)
 runtime_data["Model Fitting"] = time.time() - start_time
