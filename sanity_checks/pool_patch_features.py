@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-h5_dir = "/media/hdd1/neo/pancreas_SimCLR_2024-03-11"
-save_dir = "/media/hdd1/neo/SC_pancreas_LUAD/pancreas"
+h5_dir = "/media/hdd2/neo/TCGA-LUAD_CLAM-RESNET_2024-03-18"
+save_dir = "/media/hdd2/neo/SC_pancreas_LUAD_resnet/pancreas"
 
 # Make sure the save directory exists
 os.makedirs(save_dir, exist_ok=True)
@@ -36,8 +36,8 @@ for h5_file in tqdm(h5_files, desc="Pooling Patch Features"):
     # Get the features from the h5 file which has dim (N, 2048, 1, 1)
     features = np.array(h5_pack["features"])
 
-    # First reshape the features to (N, 2048)
-    features = features.reshape(features.shape[0], -1)
+    # # First reshape the features to (N, 2048)
+    # features = features.reshape(features.shape[0], -1)
 
     # Then randomly sample num_patches_per_h5 patches from the features each feature has dim (2048,)
     # Shuffle the features
