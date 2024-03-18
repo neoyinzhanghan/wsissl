@@ -111,6 +111,7 @@ param_dist = {
     "min_child_weight": randint(1, 10),
     "subsample": uniform(0.8, 0.2),  # percentage of samples used per tree
     "colsample_bytree": uniform(0.8, 0.2),  # percentage of features used per tree
+    "num_class": len(np.unique(y_train)),
 }
 
 runtime_data["Setup Time"] = time.time() - start_time
