@@ -89,11 +89,7 @@ runtime_data["Data Preparation"] = time.time() - start_time
 
 # Flatten X and convert y to integers
 X_train, X_val, X_test = X["train"], X["val"], X["test"]
-y_train, y_val, y_test = (
-    np.array(labels["train"]),
-    np.array(labels["val"]),
-    np.array(labels["test"]),
-)
+y_train, y_val, y_test = y["train"], y["val"], y["test"]
 
 start_time = time.time()
 print("Fitting Logistic Regression Model...")
