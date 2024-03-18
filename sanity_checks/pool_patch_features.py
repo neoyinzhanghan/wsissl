@@ -5,7 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 
 h5_dir = "/media/hdd2/neo/TCGA-LUAD_CLAM-RESNET_2024-03-18"
-save_dir = "/media/hdd2/neo/SC_pancreas_LUAD_resnet/pancreas"
+save_dir = "/media/hdd2/neo/SC_pancreas_LUAD_resnet/LUAD"
 
 # Make sure the save directory exists
 os.makedirs(save_dir, exist_ok=True)
