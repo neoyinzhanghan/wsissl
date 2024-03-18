@@ -145,6 +145,7 @@ random_search = RandomizedSearchCV(
     cv=3,
 )
 
+print(f"Searching through {n_iter_search} different random combinations...")
 random_search.fit(X_train, y_train)
 
 # Best model

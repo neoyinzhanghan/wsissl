@@ -129,6 +129,8 @@ else:
 
 # Randomized Search
 n_iter_search = 20
+
+print(f"Searching through {n_iter_search} different combinations...")
 random_search = RandomizedSearchCV(
     xgb_model,
     param_distributions=param_dist,
