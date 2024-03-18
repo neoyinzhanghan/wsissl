@@ -39,7 +39,7 @@ def split_slides(root_paths, test_size=0.2, val_size=0.25):
 
 
 # Function to load regions from given slide paths with a limit on the number of patches per slide
-def load_regions(slide_paths, labels, max_num_patches_per_slide=10):
+def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
     X = {"train": [], "val": [], "test": []}
     y = {"train": [], "val": [], "test": []}
 
