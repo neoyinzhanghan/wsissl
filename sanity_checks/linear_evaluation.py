@@ -90,7 +90,7 @@ y_train, y_val, y_test = y["train"], y["val"], y["test"]
 
 start_time = time.time()
 print("Fitting Logistic Regression Model...")
-model = LogisticRegression(max_iter=1000, solver="lbfgs")
+model = LogisticRegression(max_iter=100, solver="lbfgs")
 
 model.fit(X_train, y_train)
 runtime_data["Model Fitting"] = time.time() - start_time
