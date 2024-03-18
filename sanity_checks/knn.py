@@ -2,10 +2,14 @@ import os
 import numpy as np
 import pandas as pd
 import time
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 import random
+
+# Your existing functions: split_slides and load_regions remain unchanged
+
+# Preparing data: remains unchanged
 
 
 # Function to split slides into train, val, test sets
@@ -75,27 +79,35 @@ start_time = time.time()
 print("Preparing data...")
 slide_paths, labels = split_slides(root_paths)
 X, y = load_regions(slide_paths, labels)
-runtime_data["Data Preparation"] = time.time() - start_time
+runtime_data = {"Data Preparation": time.time() - start_time}
 
-# Flatten X and convert y to integers
+# Flatten X and convert y to integers: remains unchanged
+
 X_train, X_val, X_test = X["train"], X["val"], X["test"]
-y_train, y_val, y_test = (
-    np.array(labels["train"]),
-    np.array(labels["val"]),
-    np.array(labels["test"]),
+y_train, y_val, y_test = y["train"], y["val"], y["test"]
+
+# Incorporating Grid Search for n_neighbors
+param_grid = {"n_neighbors": np.arange(1, 31)}  # Searching through 1 to 30 neighbors
+
+# Note: Ensure you have enough samples to perform grid search effectively,
+# especially with a larger range of n_neighbors and cross-validation
+
+grid_search = GridSearchCV(
+    KNeighborsClassifier(), param_grid, cv=5, scoring="accuracy", verbose=1
 )
 
 start_time = time.time()
-print("Fitting KNN Model...")
-knn_model = KNeighborsClassifier(
-    n_neighbors=5
-)  # You can adjust n_neighbors based on your needs
-knn_model.fit(X_train, y_train)
-runtime_data["Model Fitting"] = time.time() - start_time
+print("Performing Grid Search...")
+grid_search.fit(X_train, y_train)
+runtime_data["Grid Search"] = time.time() - start_time
 
+print("Best parameters:", grid_search.best_params_)
+print("Best cross-validation score (accuracy):", grid_search.best_score_)
+
+# Evaluate the best model on the validation set
+best_model = grid_search.best_estimator_
 start_time = time.time()
-print("Evaluating model...")
-y_pred = knn_model.predict(X_val)
+y_pred = best_model.predict(X_val)
 accuracy = accuracy_score(y_val, y_pred)
 print(f"Validation Accuracy: {accuracy}")
 runtime_data["Model Evaluation"] = time.time() - start_time
