@@ -1,65 +1,104 @@
 import os
 import numpy as np
 import pandas as pd
+import time
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from tqdm import tqdm
+import random
 
-data_dir = "/media/hdd1/neo/LE_pancreas_LUAD"  # Adjust this to your data directory
-run_dir = "/media/hdd1/neo/runs/2024-03-15 LE_pancreas_LUAD"  # Adjust this to your run directory
 
-print("Pooling Data")
-# Step 1: Pool data together
-metadata_dict = {
-    "filename": [],
-    "label": [],
-}
+# Function to split slides into train, val, test sets
+def split_slides(root_paths, test_size=0.2, val_size=0.25):
+    slide_paths = {"train": [], "val": [], "test": []}
+    labels = {"train": [], "val": [], "test": []}
 
-features = []
-labels = []
+    for class_label, root_path in enumerate(root_paths):
+        slide_dirs = os.listdir(root_path)
+        # Splitting the slides into train and test
+        train_slides, test_slides = train_test_split(
+            slide_dirs, test_size=test_size, random_state=42
+        )
+        # Further split train into train and val
+        train_slides, val_slides = train_test_split(
+            train_slides, test_size=val_size, random_state=42
+        )
 
-for class_dir in tqdm(os.listdir(data_dir), desc="Pooling Classes"):
-    class_path = os.path.join(data_dir, class_dir)
-    if os.path.isdir(class_path):
-        dataset = os.listdir(class_path)
+        # Assign slide paths and labels based on the split
+        for slide in train_slides:
+            slide_paths["train"].append(os.path.join(root_path, slide))
+            labels["train"].append(class_label)
+        for slide in val_slides:
+            slide_paths["val"].append(os.path.join(root_path, slide))
+            labels["val"].append(class_label)
+        for slide in test_slides:
+            slide_paths["test"].append(os.path.join(root_path, slide))
+            labels["test"].append(class_label)
 
-        # subsample the dataset to 10000
-        dataset = np.random.choice(dataset, 10000, replace=False)
+    return slide_paths, labels
 
-        for file in tqdm(dataset, desc=f"Pooling {class_dir}"):
-            if file.endswith(".npy"):
-                file_path = os.path.join(class_path, file)
-                feature = np.load(file_path)
-                features.append(feature)
-                labels.append(class_dir)
-                metadata_dict["filename"].append(file_path)
-                metadata_dict["label"].append(class_dir)
 
-features = np.array(features)
-labels = np.array(labels)
+# Function to load regions from given slide paths with a limit on the number of patches per slide
+def load_regions(slide_paths, labels, max_num_patches_per_slide=10):
+    X = {"train": [], "val": [], "test": []}
+    y = {"train": [], "val": [], "test": []}
 
-print("Splitting Data")
-# Step 2: Split the data
-X_train, X_temp, y_train, y_temp = train_test_split(
-    features, labels, test_size=0.2, random_state=42
+    for split in ["train", "val", "test"]:
+        for path, label in zip(slide_paths[split], labels[split]):
+            if not os.path.isdir(path):
+                continue
+
+            slide_files = os.listdir(path)
+            if (
+                max_num_patches_per_slide is not None
+                and len(slide_files) > max_num_patches_per_slide
+            ):
+                slide_files = random.sample(slide_files, max_num_patches_per_slide)
+
+            for file in slide_files:
+                file_path = os.path.join(path, file)
+                img_array = np.load(file_path)
+                X[split].append(img_array.flatten())
+                y[split].append(label)
+
+    for split in ["train", "val", "test"]:
+        X[split] = np.array(X[split])
+        y[split] = np.array(y[split])
+
+    return X, y
+
+
+runtime_data = {}
+root_paths = ["/path/to/class1", "/path/to/class2"]  # Adjust paths as necessary
+
+start_time = time.time()
+print("Preparing data...")
+slide_paths, labels = split_slides(root_paths)
+X, y = load_regions(slide_paths, labels)
+runtime_data["Data Preparation"] = time.time() - start_time
+
+# Flatten X and convert y to integers
+X_train, X_val, X_test = X["train"], X["val"], X["test"]
+y_train, y_val, y_test = (
+    np.array(labels["train"]),
+    np.array(labels["val"]),
+    np.array(labels["test"]),
 )
-X_val, X_test, y_val, y_test = train_test_split(
-    X_temp, y_temp, test_size=0.5, random_state=42
-)
 
-print("Saving Data")
-# Step 3: Save metadata
-metadata = pd.DataFrame(metadata_dict)
-metadata.to_csv(os.path.join(run_dir, "split.csv"), index=False)
-
-print("Linear Evaluation Fitting Model")
-# Step 4: Linear evaluation
-model = LogisticRegression(max_iter=1000)
+start_time = time.time()
+print("Fitting Logistic Regression Model...")
+model = LogisticRegression(max_iter=1000, solver="lbfgs")
 model.fit(X_train, y_train)
+runtime_data["Model Fitting"] = time.time() - start_time
 
-print("Linear Evaluation Predicting")
+start_time = time.time()
+print("Evaluating model...")
 y_pred = model.predict(X_val)
 accuracy = accuracy_score(y_val, y_pred)
-
 print(f"Validation Accuracy: {accuracy}")
+runtime_data["Model Evaluation"] = time.time() - start_time
+
+# Save runtime data
+runtime_df = pd.DataFrame(list(runtime_data.items()), columns=["Operation", "Duration"])
+runtime_df.to_csv("runtime_data.csv", index=False)
+print("Runtime data saved to 'runtime_data.csv'.")

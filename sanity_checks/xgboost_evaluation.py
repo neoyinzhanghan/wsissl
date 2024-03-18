@@ -129,7 +129,7 @@ else:
     raise ValueError("Number of classes should be greater than 1")
 
 # Randomized Search
-n_iter_search = 50
+n_iter_search = 1
 random_search = RandomizedSearchCV(
     xgb_model,
     param_distributions=param_dist,
