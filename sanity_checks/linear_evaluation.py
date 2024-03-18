@@ -92,6 +92,14 @@ y_train, y_val, y_test = (
 start_time = time.time()
 print("Fitting Logistic Regression Model...")
 model = LogisticRegression(max_iter=1000, solver="lbfgs")
+
+# check the length of the X_train and y_train
+print(len(X_train))
+print(len(y_train))
+import sys
+
+sys.exit()
+
 model.fit(X_train, y_train)
 runtime_data["Model Fitting"] = time.time() - start_time
 
