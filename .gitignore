@@ -22,7 +22,7 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
+*.soxw
 
 # Distribution / packaging
 .Python
