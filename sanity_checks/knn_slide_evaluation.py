@@ -86,8 +86,8 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
 
 runtime_data = {}
 root_paths = [
-    "/media/hdd1/neo/SC_pancreas_LUAD/LUAD",
-    "/media/hdd1/neo/SC_pancreas_LUAD/pancreas",
+    "/media/hdd2/neo/SC_pancreas_LUAD_resnet/LUAD",
+    "/media/hdd2/neo/SC_pancreas_LUAD_resnet/pancreas",
 ]  # Replace with your actual paths
 
 
