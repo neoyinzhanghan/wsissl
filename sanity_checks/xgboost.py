@@ -78,7 +78,7 @@ root_paths = [
 
 print("Preparing data...")
 slide_paths, labels = split_slides(root_paths)
-X, y = load_regions(slide_paths, labels, max_num_patches_per_slide=100)
+X, y = load_regions(slide_paths, labels, max_num_patches_per_slide=10)
 
 X_train, X_val, X_test = X["train"], X["val"], X["test"]
 y_train, y_val, y_test = y["train"], y["val"], y["test"]
