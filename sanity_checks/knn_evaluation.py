@@ -2,10 +2,11 @@ import os
 import numpy as np
 import pandas as pd
 import time
+import random
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-import random
+from tqdm import tqdm
 
 # Your existing functions: split_slides and load_regions remain unchanged
 
@@ -48,7 +49,10 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
     y = {"train": [], "val": [], "test": []}
 
     for split in ["train", "val", "test"]:
-        for path, label in zip(slide_paths[split], labels[split]):
+        for path, label in tqdm(
+            zip(slide_paths[split], labels[split]),
+            desc=f"Loading {split} using {max_num_patches_per_slide} patches per slide",
+        ):
             if not os.path.isdir(path):
                 continue
 

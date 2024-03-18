@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import accuracy_score
 from scipy.stats import uniform, randint
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 
 
 # Function to split slides into train, val, test sets
@@ -43,20 +44,19 @@ def split_slides(root_paths, test_size=0.2, val_size=0.25):
 
 
 # Function to load regions from given slide paths with a limit on the number of patches per slide
-def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
+def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
     X = {"train": [], "val": [], "test": []}
     y = {"train": [], "val": [], "test": []}
 
     for split in ["train", "val", "test"]:
-        for path, label in zip(slide_paths[split], labels[split]):
-
-            # if the slidesfiles is not a directory, skip
+        for path, label in tqdm(
+            zip(slide_paths[split], labels[split]),
+            desc=f"Loading {split} using {max_num_patches_per_slide} patches per slide",
+        ):
             if not os.path.isdir(path):
                 continue
 
             slide_files = os.listdir(path)
-
-            # If max_num_patches_per_slide is set, randomly select patches up to the limit
             if (
                 max_num_patches_per_slide is not None
                 and len(slide_files) > max_num_patches_per_slide
@@ -69,7 +69,6 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=None):
                 X[split].append(img_array.flatten())
                 y[split].append(label)
 
-    # Convert lists to numpy arrays
     for split in ["train", "val", "test"]:
         X[split] = np.array(X[split])
         y[split] = np.array(y[split])

@@ -2,10 +2,11 @@ import os
 import numpy as np
 import pandas as pd
 import time
+import random
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-import random
+from tqdm import tqdm
 
 
 # Function to split slides into train, val, test sets
@@ -44,7 +45,10 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
     y = {"train": [], "val": [], "test": []}
 
     for split in ["train", "val", "test"]:
-        for path, label in zip(slide_paths[split], labels[split]):
+        for path, label in tqdm(
+            zip(slide_paths[split], labels[split]),
+            desc=f"Loading {split} using {max_num_patches_per_slide} patches per slide",
+        ):
             if not os.path.isdir(path):
                 continue
 
@@ -59,7 +63,6 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
                 file_path = os.path.join(path, file)
                 img_array = np.load(file_path)
                 X[split].append(img_array.flatten())
-
                 y[split].append(label)
 
     for split in ["train", "val", "test"]:
@@ -67,7 +70,6 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=100):
         y[split] = np.array(y[split])
 
     return X, y
-
 
 runtime_data = {}
 root_paths = [
