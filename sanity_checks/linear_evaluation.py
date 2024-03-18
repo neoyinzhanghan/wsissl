@@ -59,6 +59,10 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=10):
                 file_path = os.path.join(path, file)
                 img_array = np.load(file_path)
                 X[split].append(img_array.flatten())
+
+                # print the shape of the img_array.flatten()
+                print(img_array.flatten().shape)
+
                 y[split].append(label)
 
     for split in ["train", "val", "test"]:
