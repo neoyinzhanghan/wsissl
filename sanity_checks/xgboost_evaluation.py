@@ -121,7 +121,7 @@ start_time = time.time()
 
 print("Starting hyperparameter tuning...")
 # Initialize XGBClassifier
-xgb_model = xgb.XGBClassifier(objective="multi:softmax", eval_metric="mlogloss")
+xgb_model = xgb.XGBClassifier(objective='multi:softprob', eval_metric="mlogloss")
 
 # Randomized Search
 n_iter_search = 50
