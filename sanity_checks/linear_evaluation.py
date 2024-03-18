@@ -88,6 +88,14 @@ runtime_data["Data Preparation"] = time.time() - start_time
 X_train, X_val, X_test = X["train"], X["val"], X["test"]
 y_train, y_val, y_test = y["train"], y["val"], y["test"]
 
+# print the dimensions of the data
+print("X_train shape:", X_train.shape)
+print("X_val shape:", X_val.shape)
+print("X_test shape:", X_test.shape)
+print("y_train shape:", y_train.shape)
+print("y_val shape:", y_val.shape)
+print("y_test shape:", y_test.shape)
+
 start_time = time.time()
 print("Fitting Logistic Regression Model...")
 model = LogisticRegression(max_iter=100, solver="lbfgs")
