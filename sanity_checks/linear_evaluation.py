@@ -69,7 +69,11 @@ def load_regions(slide_paths, labels, max_num_patches_per_slide=10):
 
 
 runtime_data = {}
-root_paths = ["/path/to/class1", "/path/to/class2"]  # Adjust paths as necessary
+root_paths = [
+    "/media/hdd1/neo/SC_pancreas_LUAD/LUAD",
+    "/media/hdd1/neo/SC_pancreas_LUAD/pancreas",
+]  # Replace with your actual paths
+
 
 start_time = time.time()
 print("Preparing data...")
